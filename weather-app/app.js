@@ -1,5 +1,6 @@
 const request = require('request') 
 const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
 // const url = 'http://api.weatherstack.com/current?access_key=6d2b74945b7b5e54b1a87af4525d0e56&query=37.8267,-122.4233&units=f'
 
@@ -44,6 +45,14 @@ geocode('Andheri Mumbai', (error, data) => {
     } else {
         console.log('Place is: ' + data.location)
 
+        console.log(data)
+    }
+})
+
+forecast(72.856716, 19.115594, (error, data) => {
+    if (data === undefined) {
+        console.log('Error: ' + error) 
+    } else {
         console.log(data)
     }
 })
