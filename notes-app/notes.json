@@ -1,0 +1,22 @@
+[
+    {
+        "title": "My Title",
+        "body": "This is the note body"
+    },
+    {
+        "title": "My 2nd Title",
+        "body": "This is the 2nd note body"
+    },
+    {
+        "title": "My 3nd Title",
+        "body": "This is the 2nd note body"
+    },
+    {
+        "title": "Bank",
+        "body": "Bank Details"
+    },
+    {
+        "title": "Indian Bank",
+        "body": "Bank Balance = 0"
+    }
+]
