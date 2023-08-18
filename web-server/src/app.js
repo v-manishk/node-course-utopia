@@ -20,21 +20,27 @@ app.set('view engine', 'hbs')
 const publicDirectoryPath = path.join(__dirname, '../public')
 app.use(express.static(publicDirectoryPath))
 
-// send response to the user when localport is hit
-// app.get('', (req, res) => {
-//     res.send('<h1>Hello Express!</h1>')
-// })
+// rendering root page
+app.get('', (req, res) => {
+    res.render('index', {
+        title: 'Weather App',
+        name: 'Manish'
+    })
+})
 
-// app.get('/help', (req, res) => {
-//     res.send({
-//         name: 'Manish',
-//         age: 22
-//     })
-// })
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: "Weather Web App",
+        name: "ManishKumar Vishwakarma"
+    })
+})
 
-// app.get('/about', (req, res) => {
-//     res.send('<h1>Welcome to About Page</h1>')
-// })
+app.get('/help', (req, res) => {
+    res.render('help', {
+        title: "Help",
+        msg: "Want help, send your questions to us, we will try to resolve it"
+    })
+})
 
 app.get('/weather', (req, res) => {
     res.send({
