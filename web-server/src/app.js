@@ -12,12 +12,20 @@ console.log(path.join(__dirname, '../public'))
 // app will store our express application
 const app = express()
 
+// define path for expressjs
+const publicDirectoryPath = path.join(__dirname, '../public')
+// can be use while views directory name is changes eg. template
+// const viewPath = path.join(__dirname, '../templates')
 
-// tells express which templation engine we are going to use
+// tells express which templation engine we are going to use (setup handlebars engines)
 app.set('view engine', 'hbs')
+// setup handlebars voew location
+// app.set('view', 'viewPath')
+
+
 // serving the public directory
 // app.use() is a way to customize a server
-const publicDirectoryPath = path.join(__dirname, '../public')
+// setup static directory to serve
 app.use(express.static(publicDirectoryPath))
 
 // rendering root page
