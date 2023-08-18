@@ -12,6 +12,9 @@ console.log(path.join(__dirname, '../public'))
 // app will store our express application
 const app = express()
 
+
+// tells express which templation engine we are going to use
+app.set('view engine', 'hbs')
 // serving the public directory
 // app.use() is a way to customize a server
 const publicDirectoryPath = path.join(__dirname, '../public')
