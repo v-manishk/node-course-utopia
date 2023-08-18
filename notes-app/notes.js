@@ -7,7 +7,7 @@ const addNote = (title, body) => {
     // const duplicateNotes = notes.filter((note) => note.title === title)     // runs the entire list for duplicate even if it find the duplicate in array
     const duplicateNote = notes.find((note) => note.title === title)
 
-    // debugger
+    debugger
 
     if (!duplicateNote) {
         notes.push({
