@@ -1,9 +1,14 @@
 // get core node path module to manupulate path and access public folder
 const path = require('path')
 
+// getting the request module
+const request = require('request')
+
 // it get a single express function
 // we can call it create a new express application
 const express = require('express')   
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
 // to work with partials
 const hbs = require('hbs')
@@ -60,9 +65,67 @@ app.get('/help', (req, res) => {
 })
 
 app.get('/weather', (req, res) => {
+    if (!req.query.address) {
+        return res.send({
+            error: 'Please provide the address'
+        })
+    }
+
+    geocode(req.query.address, (error, {latitude, longitude, location} = {}) => {
+        if (error) {
+            return res.send({
+                error: 'Error: ' + error,
+                address: req.query.address
+            })
+        } else {
+            // console.log(chalk.blue.bold('Latitude: ') + latitude)
+            // console.log(chalk.blue.bold('Longitude: ') + longitude)
+            // console.log(chalk.blue.bold('Place is: ')+ location)
+    
+            forecast(latitude, longitude, (error, {forecast}) => {
+                if (error) {
+                    return res.send([
+                        {
+                            error: 'Error: ' + error
+                        }, 
+                        {
+                            latitude,
+                            longitude,
+                            location,
+                            Address: req.query.address
+                        }
+                    ])
+                    // console.log('Error: ' + error) 
+                } else {
+                    res.send({
+                        latitude,
+                        longitude,
+                        location,
+                        address: req.query.address,
+                        weather_forecast: forecast
+                    })
+                    // console.log(chalk.blue.bold(weather_descriptions) + '. Temperature is ' + chalk.green.bold(temperature) + '. But, feels like ' + chalk.green.bold(feelslike) + '.')
+                }
+            })
+        }
+    }) 
+
+    // res.send({
+    //     address: req.query.address,
+    //     location: 'Earth',
+    //     forecast: 32
+    // })
+})
+
+app.get('/product', (req, res) => {
+    if (!req.query.search) {
+        return res.send({
+            product: 'product not found'
+        })
+    }
+    console.log(req.query.search)
     res.send({
-        location: 'Mumbai',
-        forecast: 32
+        product: []
     })
 })
 
