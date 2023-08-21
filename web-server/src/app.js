@@ -21,6 +21,9 @@ console.log(path.join(__dirname, '../public'))
 // app will store our express application
 const app = express()
 
+// getting port from the environment
+const port = process.env.PORT || 3000
+
 // define path for expressjs
 const publicDirectoryPath = path.join(__dirname, '../public')
 // can be use while views directory name is changes eg. template
@@ -146,6 +149,6 @@ app.get('*', (req, res) => {
 })
 
 // start app server at port 3000
-app.listen(3000, () => {
-    console.log('Server is running')
+app.listen(port, () => {
+    console.log('Server is running at port: ' + port)
 })

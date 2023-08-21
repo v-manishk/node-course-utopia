@@ -9,7 +9,7 @@ const forecast = (latitude, longitude, callback) => {
             callback('Unable to find the address. Try another Search', undefined)
         } else {
             callback(undefined, {
-                forecast: body.current.weather_descriptions[0] + '. Temperature is ' + body.current.temperature + '. But, feels like ' + body.current.feelslike + '.' 
+                forecast: body.current.weather_descriptions[0] + '. Temperature is ' + body.current.temperature + ' degree out. But, feels like ' + body.current.feelslike + ' degree. Humidity is ' + body.current.humidity + '%.' 
             })
             
         }
