@@ -9,17 +9,17 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
 
 
 // task
-const Task = mongoose.model('Task', {
-    description: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    completed: {
-        type: Boolean,
-        default: false
-    }
-})
+// const Task = mongoose.model('Task', {
+//     description: {
+//         type: String,
+//         required: true,
+//         trim: true
+//     },
+//     completed: {
+//         type: Boolean,
+//         default: false
+//     }
+// })
 
 // const me = new Task({
 //     description: '      Tryping on Validation       '
