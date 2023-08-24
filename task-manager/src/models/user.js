@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Task = require('./task')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -48,10 +49,30 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {
+    timestamps: true
+})
+
+// setting virtual property on the user for the user and task relationships
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
 })
 
 
 // setting a method to use the middleware
+
+// for modifying the response
+userSchema.methods.toJSON = function () {
+    const user = this
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
 
 // for genrating auth token via JWT
 userSchema.methods.generateAuthToken = async function () {
@@ -83,13 +104,20 @@ userSchema.statics.findByCredentials = async (email, password) => {
 }
 
 // Hash the plain text before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
     const user = this
     
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }
 
+    next()
+})
+
+// delete the task of user when the user is deleted
+userSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
+    const user = this
+    await Task.deleteMany({owner: user._id})
     next()
 })
 
