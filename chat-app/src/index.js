@@ -2,6 +2,7 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const socketio = require('socket.io')
+const Filter = require('bad-words')
 
 const app = express()
 const server = http.createServer(app)
@@ -13,25 +14,30 @@ const publicDirectoryPath = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirectoryPath))
 
-// let count = 0
-let message = ''
 
 io.on('connection', (socket) => {
     console.log('New WebSocket connection')
 
-    socket.emit('message', 'Welcome')
+    socket.emit('message', 'Welcome! to chat app')
+    socket.broadcast.emit('message', 'A new User has joined')
 
-    // socket.on('increment', () => {
-    //     count++
-    //     // response to the perticular client
-    //     // socket.emit('countUpdated', count) 
+    socket.on('textMessageSend', (msg, callback) => {
+        const filter = new Filter()
+        if (filter.isProfane(msg)) {
+            return callback('Profanity is not allowed')
+        }
+        socket.broadcast.emit('message', 'Received Message: ' + msg)
+        callback()
+    })
 
-    //     // for to response each client on the server
-    //     io.emit('countUpdated', count)
-    // })
+    socket.on('sendLocation', ({latitude, longitude}, callback) => {
+        socket.emit('message', 'Location Sent!')
+        socket.broadcast.emit('locationMessage', `https://google.com/maps?q=${latitude},${longitude}`)
+        callback()
+    })
 
-    socket.on('textMessageSend', (msg) => {
-        io.emit('textMessageReceived', msg)
+    socket.on('disconnect', () => {
+        io.emit('message', 'A user has left!')
     })
 
 })
